@@ -42,7 +42,7 @@ class EventController
                 ['message' => $exception->getMessage()],
                 Response::HTTP_NOT_FOUND
             );
-        } catch (\Exception $exception) {
+        } catch (\Exception $exception) { // @phpstan-ignore-line
             return new Response(null, Response::HTTP_SERVICE_UNAVAILABLE);
         }
 

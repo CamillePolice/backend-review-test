@@ -31,7 +31,7 @@ class EventTypeMapper
 
     /**
      * Get all supported GH Archive event types
-     * @return array
+     * @return array<string>
      */
     public function getSupportedEventTypes(): array
     {
@@ -40,7 +40,7 @@ class EventTypeMapper
 
     /**
      * Get the mapping from GitHub event types to internal EventType constants
-     * @return array
+     * @return array<string, string>
      */
     public function getMapping(): array
     {
@@ -50,7 +50,7 @@ class EventTypeMapper
     /**
      * Get GitHub event types that map to a specific internal EventType
      * @param string $internalType
-     * @return array
+     * @return array<string>
      */
     public function getGitHubTypesByInternalType(string $internalType): array
     {

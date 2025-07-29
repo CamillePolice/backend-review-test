@@ -36,7 +36,8 @@ class UrlUtils
         } elseif ($month !== null) {
             // Entire month: 2015-01-{01..31}-{0..23}.json.gz
             $monthStr = sprintf('%02d', $month);
-            $daysInMonth = date('t', mktime(0, 0, 0, $month, 1, $year));
+            $timestamp = mktime(0, 0, 0, $month, 1, $year);
+            $daysInMonth = $timestamp !== false ? date('t', $timestamp) : 31;
             $dayRange = sprintf('%02d..%02d', 1, $daysInMonth);
             return sprintf('%s/%s-%s-{%s}-{0..23}.json.gz', self::GH_ARCHIVE_BASE_URL, $yearStr, $monthStr, $dayRange);
             

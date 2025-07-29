@@ -39,6 +39,8 @@ enum GithubEventType: string
 
     /**
      * Get all supported GitHub event types
+     * 
+     * @return array<string>
      */
     public static function getSupportedTypes(): array
     {
@@ -47,6 +49,8 @@ enum GithubEventType: string
 
     /**
      * Get the mapping from GitHub event types to internal EventType constants
+     * 
+     * @return array<string, string>
      */
     public static function getMapping(): array
     {
@@ -59,6 +63,8 @@ enum GithubEventType: string
 
     /**
      * Get event types that map to a specific internal EventType
+     * 
+     * @return array<string>
      */
     public static function getByInternalType(string $internalType): array
     {

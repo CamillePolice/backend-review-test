@@ -63,6 +63,8 @@ enum LocalEventType: string
 
     /**
      * Get all internal event types
+     * 
+     * @return array<string>
      */
     public static function getAll(): array
     {
@@ -71,6 +73,8 @@ enum LocalEventType: string
 
     /**
      * Get all internal event types with their display names
+     * 
+     * @return array<string, string>
      */
     public static function getAllWithDisplayNames(): array
     {

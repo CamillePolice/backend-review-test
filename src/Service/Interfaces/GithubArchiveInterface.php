@@ -23,9 +23,10 @@ interface GithubArchiveInterface
 
     /**
      * Import events from GH Archive.
-     * @param string $startDate
-     * @param string $endDate
-     * @param int $hour
+     * @param int $year
+     * @param int|null $month
+     * @param int|null $day
+     * @param int|null $hour
      * @param string $keyword
      * @return int
      */

@@ -121,7 +121,8 @@ class ImportGitHubEventsCommand extends Command
         } elseif ($day !== null) {
             return sprintf('%d-%02d-%02d (entire day)', $year, $month, $day);
         } elseif ($month !== null) {
-            $monthName = date('F', mktime(0, 0, 0, $month, 1));
+            $timestamp = mktime(0, 0, 0, $month, 1);
+            $monthName = $timestamp !== false ? date('F', $timestamp) : 'Unknown';
             return sprintf('%s %d (entire month)', $monthName, $year);
         } else {
             return sprintf('%d (entire year)', $year);
@@ -157,7 +158,8 @@ class ImportGitHubEventsCommand extends Command
             
             // Check if day exists in the given month/year
             if ($month !== null) {
-                $daysInMonth = date('t', mktime(0, 0, 0, $month, 1, $year));
+                $timestamp = mktime(0, 0, 0, $month, 1, $year);
+                $daysInMonth = $timestamp !== false ? date('t', $timestamp) : 31;
                 if ($day > $daysInMonth) {
                     return sprintf('Invalid day. Month %d in year %d has only %d days', $month, $year, $daysInMonth);
                 }

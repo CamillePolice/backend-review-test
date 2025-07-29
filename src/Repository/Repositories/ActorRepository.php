@@ -16,6 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * It uses Doctrine ORM for type-safe database operations.
  * 
  * @package App\Repository
+ * @extends ServiceEntityRepository<Actor>
  */
 class ActorRepository extends ServiceEntityRepository implements ActorRepositoryInterface
 {

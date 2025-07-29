@@ -17,6 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * PostgreSQL-specific JSON operations for searching within event payloads.
  * 
  * @package App\Repository
+ * @extends ServiceEntityRepository<Event>
  */
 class EventRepository extends ServiceEntityRepository implements EventRepositoryInterface
 {
@@ -112,7 +113,7 @@ class EventRepository extends ServiceEntityRepository implements EventRepository
         return array_map(static function($item) {
             return [
                 'type' => $item['type'],
-                'repo' => $item['repo']
+                'repo' => $item['repo']->name()
             ];
         }, $results);
     }

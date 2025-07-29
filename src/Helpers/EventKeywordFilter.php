@@ -13,6 +13,8 @@ class EventKeywordFilter
 
     /**
      * Check if an event matches the given keyword
+     * 
+     * @param array<string, mixed> $event
      */
     public function eventMatchesKeyword(array $event, string $keyword): bool
     {

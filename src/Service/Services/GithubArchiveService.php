@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Services;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 use App\Service\Interfaces\GithubArchiveInterface;
 use App\Utils\UrlUtils;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -19,7 +19,6 @@ use Doctrine\ORM\EntityManagerInterface;
 class GithubArchiveService implements GithubArchiveInterface
 {
     public function __construct(
-        private readonly HttpClientInterface $httpClient,
         private readonly EventTypeMapper $eventTypeMapper,
         private readonly EventKeywordFilter $keywordFilter,
         private readonly ActorRepositoryInterface $actorRepository,
@@ -176,9 +175,7 @@ class GithubArchiveService implements GithubArchiveInterface
         try {
             yield from $this->processLocalGzipFile($tempFile);
         } finally {
-            if (file_exists($tempFile)) {
-                unlink($tempFile);
-            }
+            unlink($tempFile);
         }
     }
 
@@ -227,7 +224,7 @@ class GithubArchiveService implements GithubArchiveInterface
      * Expands URL patterns containing range expressions like {0..23} into individual URLs.
      * 
      * @param string $urlPattern The URL pattern that may contain range expansions
-     * @return array Array of expanded URLs
+     * @return array<string> Array of expanded URLs
      */
     private function expandUrlPattern(string $urlPattern): array
     {
@@ -306,21 +303,21 @@ class GithubArchiveService implements GithubArchiveInterface
      */
     private function extractCommentFromEvent(array $eventData): ?string
     {
-        $githubEventType = \App\Enum\GitHubEventType::tryFrom($eventData['type']);
+        $githubEventType = \App\Enum\GithubEventType::tryFrom($eventData['type']);
         if ($githubEventType === null) {
             return null;
         }
 
         return match ($githubEventType) {
-            \App\Enum\GitHubEventType::ISSUE_COMMENT_EVENT,
-            \App\Enum\GitHubEventType::COMMIT_COMMENT_EVENT,
-            \App\Enum\GitHubEventType::PULL_REQUEST_REVIEW_COMMENT_EVENT => 
+            \App\Enum\GithubEventType::ISSUE_COMMENT_EVENT,
+            \App\Enum\GithubEventType::COMMIT_COMMENT_EVENT,
+            \App\Enum\GithubEventType::PULL_REQUEST_REVIEW_COMMENT_EVENT => 
                 $eventData['payload']['comment']['body'] ?? null,
                 
-            \App\Enum\GitHubEventType::PULL_REQUEST_EVENT => 
+            \App\Enum\GithubEventType::PULL_REQUEST_EVENT => 
                 $this->extractPullRequestComment($eventData),
                 
-            \App\Enum\GitHubEventType::PUSH_EVENT => 
+            \App\Enum\GithubEventType::PUSH_EVENT => 
                 $this->extractCommitMessages($eventData),
         };
     }
