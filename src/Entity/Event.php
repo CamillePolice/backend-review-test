@@ -11,37 +11,47 @@ use Webmozart\Assert\Assert;
 /**
  * @ORM\Entity()
  * @ORM\Table(name="`event`",
- *    indexes={@ORM\Index(name="IDX_EVENT_TYPE", columns={"type"})}
+ *    indexes={
+ *        @ORM\Index(name="IDX_EVENT_TYPE", columns={"type"}),
+ *        @ORM\Index(name="IDX_EVENT_CREATED_AT", columns={"create_at"}),
+ *        @ORM\Index(name="IDX_EVENT_ACTOR", columns={"actor_id"}),
+ *        @ORM\Index(name="IDX_EVENT_REPO", columns={"repo_id"}),
+ *        @ORM\Index(name="IDX_EVENT_TYPE_CREATED", columns={"type", "create_at"})
+ *    },
+ *    uniqueConstraints={
+ *        @ORM\UniqueConstraint(name="UNQ_EVENT_ID", columns={"id"})
+ *    }
  * )
+ * @ORM\HasLifecycleCallbacks()
  */
 class Event
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="bigint", options={"unsigned": true})
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private int $id;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", length=50, nullable=false)
      */
     private string $type;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="integer", nullable=false, options={"unsigned": true, "default": 1})
      */
     private int $count = 1;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Actor", cascade={"persist"})
-     * @ORM\JoinColumn(name="actor_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Actor", cascade={"persist", "merge"}, fetch="EAGER")
+     * @ORM\JoinColumn(name="actor_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private Actor $actor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Repo", cascade={"persist"})
-     * @ORM\JoinColumn(name="repo_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Repo", cascade={"persist", "merge"}, fetch="EAGER")
+     * @ORM\JoinColumn(name="repo_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private Repo $repo;
 
@@ -57,7 +67,7 @@ class Event
     private \DateTimeImmutable $createAt;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=true, length=65535)
      */
     private ?string $comment;
 
